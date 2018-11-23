@@ -6,6 +6,7 @@
 // @author       Manantt, MRK.
 // @match        https://s157-es.ogame.gameforge.com/*
 // @grant        none
+// @require      https://raw.githubusercontent.com/manantt/marvk/master/config/htmlProperties.js
 // ==/UserScript==
 
 //import * from 'https://raw.githubusercontent.com/manantt/marvk/master/config/html.properties';
