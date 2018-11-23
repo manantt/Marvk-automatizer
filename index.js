@@ -116,6 +116,13 @@ function init(){
 function crearMenu(){
     $("#menuTable").prepend("<li id='menuCustom'></li>");
     $("#menuCustom").append(
+        '<span id="playPause" class="menu_icon custom_menu_icon">'+
+            '<a href="javascript: void(0);" class="tooltipRight js_hideTipOnMobile " target="_self" title="Recolectar">'+
+                '<div class=""></div>'+
+             '</a>' +
+        '</span>'
+    );
+    $("#menuCustom").append(
         '<span id="mandarExpedicion" class="menu_icon custom_menu_icon">'+
             '<a href="https://s157-es.ogame.gameforge.com/game/index.php?page=fleet1&custom=expedicion" class="tooltipRight js_hideTipOnMobile " target="_self" title="Expedición">'+
                 '<div class="menuImage fleet1"></div>'+
@@ -129,20 +136,26 @@ function crearMenu(){
              '</a>' +
         '</span>'
     );
-    $("#menuCustom").append(
-        '<span id="playPause" class="menu_icon custom_menu_icon">'+
-            '<a href="javascript: void(0);" class="tooltipRight js_hideTipOnMobile " target="_self" title="Recolectar">'+
-                '<div class="menuImage overview active"></div>'+
-             '</a>' +
-        '</span>'
-    );
     //Estilos
     $(".custom_menu_icon").css("float", "left");
     if(localStorage.pausa == "false"){
-        $("#playPause .menuImage").addClass('active');
+        $("#playPause div").css('background-position', '-27px -27px');
+        $("#playPause div").addClass('active');
     } else {
-        $("#playPause .menuImage").removeClass('active');
+        $("#playPause div").css('background-position', '-0px -0px');
+        $("#playPause div").removeClass('active');
     }
+    $("#playPause div").css("width", "27px").css("height", "27px").css("background-image", "url(https://github.com/manantt/marvk/raw/master/images/icons.png)");
+    $("#playPause div:not(.active)").hover(function() {
+        $("#playPause div").css('background-position', '-0px -27px');
+    }, function() {
+        $("#playPause div").css('background-position', '-0px -0px');
+    });
+    $("#playPause div.active").hover(function() {
+        $("#playPause div").css('background-position', '-27px -54px');
+    }, function() {
+        $("#playPause div").css('background-position', '-27px -27px');
+    });
     //Acciones
     $("#playPause").click(function(){
         if(localStorage.pausa == "false"){
