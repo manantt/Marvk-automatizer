@@ -3,7 +3,7 @@
 // @namespace    http://tampermonkey.net/
 // @version      0.1
 // @description  try to take over the world!
-// @author       Manantt, MRK
+// @author       Manantt, MRK.
 // @match        https://s157-es.ogame.gameforge.com/*
 // @grant        none
 // ==/UserScript==
