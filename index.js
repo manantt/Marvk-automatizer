@@ -8,7 +8,7 @@
 // @grant        none
 // ==/UserScript==
 
-import * from 'https://raw.githubusercontent.com/manantt/marvk/master/config/html.properties';
+//import * from 'https://raw.githubusercontent.com/manantt/marvk/master/config/html.properties';
 
 /******************* CONFIGURACIÓN *********************************************************/
 const acciones = [
@@ -69,7 +69,7 @@ const planetas = [
 
 /******************* MAIN *********************************************************/
 $(function(){
-	console.log("mrk" + ids."Lanzamisiles");
+	console.log("mrk");// + ids."Lanzamisiles");
     accionesInstantaneas();
     crearMenu();
     /* setTimeout(function() {
