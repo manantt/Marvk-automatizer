@@ -8,6 +8,8 @@
 // @grant        none
 // ==/UserScript==
 
+//import * from 'https://raw.githubusercontent.com/manantt/marvk/master/config/html.properties';
+
 /******************* CONFIGURACIÓN *********************************************************/
 const acciones = [
   "defensas",
@@ -42,7 +44,6 @@ const defensas = {
     ["Misil interplanetario","details503",0]
   ]
 }
-
 const planetas = [
   {
     "id": "33638025",
@@ -68,6 +69,7 @@ const planetas = [
 
 /******************* MAIN *********************************************************/
 $(function(){
+	console.log("mrk");// + ids."Lanzamisiles");
     accionesInstantaneas();
     crearMenu();
     /* setTimeout(function() {
