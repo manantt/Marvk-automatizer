@@ -42,7 +42,7 @@ const defensas = {
     ["Misil interplanetario","details503",0]
   ]
 }
-
+import myDefault from 'https://raw.githubusercontent.com/manantt/marvk/master/config/html.properties';
 const planetas = [
   {
     "id": "33638025",
@@ -68,6 +68,7 @@ const planetas = [
 
 /******************* MAIN *********************************************************/
 $(function(){
+	console.log("mrk" + ids."Lanzamisiles");
     accionesInstantaneas();
     crearMenu();
     /* setTimeout(function() {
