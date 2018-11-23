@@ -8,6 +8,8 @@
 // @grant        none
 // ==/UserScript==
 
+import * from 'https://raw.githubusercontent.com/manantt/marvk/master/config/html.properties';
+
 /******************* CONFIGURACIÓN *********************************************************/
 const acciones = [
   "defensas",
@@ -42,7 +44,6 @@ const defensas = {
     ["Misil interplanetario","details503",0]
   ]
 }
-import myDefault from 'https://raw.githubusercontent.com/manantt/marvk/master/config/html.properties';
 const planetas = [
   {
     "id": "33638025",
