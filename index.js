@@ -70,10 +70,10 @@ const planetas = [
 $(function(){
     accionesInstantaneas();
     crearMenu();
-    setTimeout(function() {
+    /* setTimeout(function() {
       localStorage.pausa = false;
       init();
-    }, 600000);
+    }, 600000); */
     init();
 });
 
