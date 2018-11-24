@@ -117,7 +117,7 @@ function init() {
 
 /******************* MENU *********************************************************/
 function crearMenu() {
-    $("#menuTable").prepend("<li id='menuCustom'></li>");
+    $("#menuTable").prepend("<li id='menuCustom' style='padding: 5px 0 5px 15px;'></li>");
     $("#menuCustom").append(
         '<span id="playPause" class="menu_icon custom_menu_icon">' +
         '<a href="javascript: void(0);" class="tooltipRight js_hideTipOnMobile " target="_self" title="Iniciar/Parar">' +
