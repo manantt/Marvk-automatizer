@@ -10,6 +10,9 @@
 // ==/UserScript==
 
 /******************* CONFIGURACIÓN *********************************************************/
+
+const config = configGeneral[configGeneral.getUsuario()];
+console.log(config);
 const acciones = [
     "defensas",
     "enviarRecursos",
