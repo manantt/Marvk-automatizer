@@ -142,7 +142,7 @@ function crearMenu() {
     //Estilos
     $(".custom_menu_icon").css("float", "left");
     if (localStorage.pausa == "false") {
-        $("#playPause div").css('background-position', '-27px -27px');
+        $("#playPause div").css('background-position', '-27px -54px');
         $("#playPause div").addClass('active');
     } else {
         $("#playPause div").css('background-position', '-0px -0px');
@@ -150,14 +150,14 @@ function crearMenu() {
     }
     $("#playPause div").css("width", "27px").css("height", "27px").css("background-image", "url(https://github.com/manantt/marvk/raw/master/images/icons.png)");
     $("#playPause div:not(.active)").hover(function() {
-        $("#playPause div").css('background-position', '-0px -27px');
+        $("#playPause div").css('background-position', '-0px -54px');
     }, function() {
         $("#playPause div").css('background-position', '-0px -0px');
     });
     $("#playPause div.active").hover(function() {
-        $("#playPause div").css('background-position', '-27px -54px');
-    }, function() {
         $("#playPause div").css('background-position', '-27px -27px');
+    }, function() {
+        $("#playPause div").css('background-position', '-27px -54px');
     });
     //Acciones
     $("#playPause").click(function() {
@@ -370,7 +370,7 @@ function comparar(a, b) {
 /******************* ACCIONES INSTANTÁNEAS *********************************************************/
 function accionesInstantaneas() {
     if(localStorage.pausa == "false"){ //solo se hacen de modo manual
-        return; 
+        return;
     }
     //escanear galaxia
     if (window.location.href.toString().indexOf("custom=escanear") != -1) {
