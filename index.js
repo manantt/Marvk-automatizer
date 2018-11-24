@@ -21,10 +21,10 @@ const defensas = {
     "fortaleza": [
         ["Lanzamisiles", "details401", 1000],
         ["Láser pequeño", "details402", 6000],
-        ["Láser grande", "details403", 1250],
+        ["Láser grande", "details403", 1500],
         ["Cañón Gauss", "details404", 200],
         ["Cañón iónico", "details405", 200],
-        ["Cañón de plasma", "details406", 32],
+        ["Cañón de plasma", "details406", 40],
         ["Cúpula pequeña de protección", "details407", 1],
         ["Cúpula grande de protección", "details408", 1],
         ["Misiles antibalísticos", "details502", 48],
@@ -149,6 +149,7 @@ function crearMenu() {
         $("#playPause div").removeClass('active');
     }
     $("#playPause div").css("width", "27px").css("height", "27px").css("background-image", "url(https://github.com/manantt/marvk/raw/master/images/icons.png)");
+    $("#recolectar div").css("width", "27px").css("height", "27px").css("background-image", "url(https://github.com/manantt/marvk/raw/master/images/icons.png)").css('background-position', '-54px -0px');
     $("#playPause div:not(.active)").hover(function() {
         $("#playPause div").css('background-position', '-0px -54px');
     }, function() {
@@ -158,6 +159,11 @@ function crearMenu() {
         $("#playPause div").css('background-position', '-27px -27px');
     }, function() {
         $("#playPause div").css('background-position', '-27px -54px');
+    });
+    $("#playPause div").hover(function() {
+        $("#playPause div").css('background-position', '-54px -54px');
+    }, function() {
+        $("#playPause div").css('background-position', '-54px -0px');
     });
     //Acciones
     $("#playPause").click(function() {
@@ -270,8 +276,8 @@ function recolectar() {
 }
 
 /******************* ACCIONES MANUALES *********************************************************/
-var origen = 204;
-var g = 3;
+var origen = parseInt(system);
+var g = parseInt(galaxy);
 
 function recolectarManual() {
     var resultados = [];
