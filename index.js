@@ -120,7 +120,7 @@ function crearMenu() {
     $("#menuTable").prepend("<li id='menuCustom'></li>");
     $("#menuCustom").append(
         '<span id="playPause" class="menu_icon custom_menu_icon">' +
-        '<a href="javascript: void(0);" class="tooltipRight js_hideTipOnMobile " target="_self" title="Recolectar">' +
+        '<a href="javascript: void(0);" class="tooltipRight js_hideTipOnMobile " target="_self" title="Iniciar/Parar">' +
         '<div class=""></div>' +
         '</a>' +
         '</span>'
@@ -160,10 +160,10 @@ function crearMenu() {
     }, function() {
         $("#playPause div").css('background-position', '-27px -54px');
     });
-    $("#playPause div").hover(function() {
-        $("#playPause div").css('background-position', '-54px -54px');
+    $("#recolectar div").hover(function() {
+        $("#recolectar div").css('background-position', '-54px -54px');
     }, function() {
-        $("#playPause div").css('background-position', '-54px -0px');
+        $("#recolectar div").css('background-position', '-54px -0px');
     });
     //Acciones
     $("#playPause").click(function() {
