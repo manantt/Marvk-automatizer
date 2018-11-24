@@ -184,6 +184,11 @@ function crearMenu() {
 }
 
 /******************* ÚTILES *********************************************************/
+function siguienteAccion() {
+    localStorage.accionActual = parseInt(localStorage.accionActual) + 1;
+    location.reload();
+}
+
 function getNumNaves(tipo) { //TODO
     var id = "ship_203";
     switch (tipo) {
@@ -201,13 +206,24 @@ function getPlanetaSeleccionado() { //TODO
     return 0;
 }
 
-function siguienteAccion() {
-    localStorage.accionActual = parseInt(localStorage.accionActual) + 1;
-    location.reload();
-}
-
 function getCoordenadasFortaleza(){ //TODO
      return [3, 204, 5];
+}
+
+function getCoordenadasPlanetaActual(){ //TODO
+     return [3, 204, 5];
+}
+
+function getFlotasDisponibles(){ //TODO
+    return;
+}
+
+function getExpedicionesDisponibles(){ //TODO
+    return;
+}
+
+function sePuedenConstruirDeffs(idDeff){ //TODO
+    return true;
 }
 
 /******************* ACCIONES AUTOMÁTICAS *********************************************************/
@@ -224,16 +240,14 @@ function hacerDefensas() {
                 var queremos = element[2];
                 var hay = parseInt($("#" + element[1] + " .level").text().replace('.', '').split("\n")[3].trim());
                 var contDeffs = queremos - hay;
-                if (contDeffs > 0) {
+                if (contDeffs > 0 && sePuedenConstruirDeffs(element[1]) ) {
                     $("#" + element[1]).click();
-                    console.log("click en " + element[0]);
                     setTimeout(function() {
                         $("#number").val(contDeffs);
                         $(".build-it").click();
                         console.log("haciendo " + element[0]);
                     }, 1500);
                     return false;
-                    console.log("return " + element[0]);
                 }
             }
         }
@@ -279,8 +293,8 @@ function recolectar() {
 }
 
 /******************* ACCIONES MANUALES *********************************************************/
-var origen = parseInt(system);
-var g = parseInt(galaxy);
+var origen = typeof system == "undefined" ? 204 : parseInt(system);
+var g = typeof galaxy == "undefined" ? 3 : parseInt(galaxy);
 
 function recolectarManual() {
     var resultados = [];
@@ -396,7 +410,7 @@ function accionesInstantaneas() {
     //expedición 2
     if (window.location.href.toString().indexOf("page=fleet2") != -1) {
         if ($("#storage .undermark").html() == "1.250.000") {
-            $("#system").val(parseInt(Math.random() * (206 - 202) + 202));
+            $("#system").val(parseInt(Math.random() * 4 + getCoordenadasPlanetaActual()[1] - 2));
             $("#position").val(16);
             $("#continue").click();
         }
