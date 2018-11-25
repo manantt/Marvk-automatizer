@@ -134,7 +134,6 @@ function init() {
         if (getPlanetaSeleccionado() != localStorage.planetaActual) { //TODO
             goToPlaneta(localStorage.planetaActual);
             console.log(getPlanetaSeleccionado(), localStorage.planetaActual);
-            alert("cambio");
         } else {
             if (planetas[localStorage.planetaActual].acciones[localStorage.accionActual]) {
                 switch (localStorage.accionActual) {
@@ -222,8 +221,6 @@ function crearMenu() {
         }
         location.reload();
     });
-
-
 }
 
 /******************* ÚTILES *********************************************************/
@@ -232,7 +229,6 @@ function siguienteAccion() {
     if(localStorage.accionActual >= acciones.length){
         localStorage.accionActual = 0;
         siguientePlaneta();
-        alert("sig");
     }
     location.reload();
 }
@@ -292,7 +288,7 @@ function getExpedicionesDisponibles(){ //TODO
 }
 
 function sePuedenConstruirDeffs(idDeff){ //TODO
-    return true;
+    return $("li.on #"+idDeff).length > 0;
 }
 
 /******************* ACCIONES AUTOMÁTICAS *********************************************************/
