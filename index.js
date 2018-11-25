@@ -478,7 +478,7 @@ function accionesInstantaneas() {
     }
     //expedición 2
     if (window.location.href.toString().indexOf("page=fleet2") != -1) {
-        if ($("#storage .undermark").html() == "1.250.000") {
+        if ($("#storage .undermark").html() == "1.875.000") {
             $("#system").val(parseInt(Math.random() * 4 + getCoordenadasPlanetaActual()[1] - 2));
             $("#position").val(16);
             $("#continue").click();
@@ -486,7 +486,7 @@ function accionesInstantaneas() {
     }
     //expedición 3
     if (window.location.href.toString().indexOf("page=fleet3") != -1) {
-        if ($("#maxresources").html() == "1.250.000") {
+        if ($("#maxresources").html() == "1.875.000") {
             $("#start").click();
         }
     }
