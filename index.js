@@ -46,7 +46,8 @@ const defensas = {
         ["Misil interplanetario", "details503", 0]
     ]
 }
-const planetas = [{
+const planetas = [
+    {
         "id": "33638025",
         "fortaleza": false,
         "acciones": [
@@ -62,8 +63,48 @@ const planetas = [{
         "acciones": [
             true,
             false,
+            false,//true,
+            false//true
+        ]
+    },
+    {
+        "id": "33641426",
+        "fortaleza": false,
+        "acciones": [
             true,
-            true
+            true,
+            false,
+            false
+        ]
+    },
+    {
+        "id": "33644701",
+        "fortaleza": false,
+        "acciones": [
+            true,
+            true,
+            false,
+            false
+        ]
+    },
+    {
+        "id": "33651159",
+        "fortaleza": false,
+        "acciones": [
+            true,
+            true,
+            false,
+            false
+        ]
+    },
+    {
+        "id": "33661795",
+        "fortaleza": false,
+        "acciones": [
+            true,
+            false,
+            false,
+            false
         ]
     }
 ];
@@ -91,7 +132,9 @@ function init() {
     if (localStorage.pausa === "false") {
         console.log();
         if (getPlanetaSeleccionado() != localStorage.planetaActual) { //TODO
-            //TODO: goToPlaneta(localStorage.planetaActual);
+            goToPlaneta(localStorage.planetaActual);
+            console.log(getPlanetaSeleccionado(), localStorage.planetaActual);
+            alert("cambio");
         } else {
             if (planetas[localStorage.planetaActual].acciones[localStorage.accionActual]) {
                 switch (localStorage.accionActual) {
@@ -109,7 +152,7 @@ function init() {
                         break;
                     default:
                         localStorage.accionActual = 0;
-                        //TODO: sigPt;
+                        siguientePlaneta();
                 }
             } else {
                 siguienteAccion();
@@ -186,7 +229,26 @@ function crearMenu() {
 /******************* ÚTILES *********************************************************/
 function siguienteAccion() {
     localStorage.accionActual = parseInt(localStorage.accionActual) + 1;
+    if(localStorage.accionActual >= acciones.length){
+        localStorage.accionActual = 0;
+        siguientePlaneta();
+        alert("sig");
+    }
     location.reload();
+}
+
+function siguientePlaneta() {
+    localStorage.planetaActual = parseInt(localStorage.planetaActual) + 1;
+    if(localStorage.planetaActual >= planetas.length){
+        localStorage.planetaActual = 0;
+        localStorage.pausa = true;
+        alert("fin");
+    }
+    location.reload();
+}
+
+function goToPlaneta(idPlaneta){
+    window.location = "https://s157-es.ogame.gameforge.com/game/index.php?page=defense&cp="+planetas[idPlaneta]['id'];
 }
 
 function getNumNaves(tipo) { //TODO
@@ -199,11 +261,18 @@ function getNumNaves(tipo) { //TODO
             id = "ship_202";
             break;
     }
+    if($("#" + id).length == 0) return 0;
     return parseInt($("#" + id).attr("onchange").match(/([0-9]+)\)/)[1]);
 }
 
 function getPlanetaSeleccionado() { //TODO
-    return 0;
+    var planeta = null;
+    $("#myPlanets .smallplanet .planetlink").each(function(key, v){
+        if($(this).hasClass("active")){
+            planeta = key.toString();
+        }
+    });
+    return planeta;
 }
 
 function getCoordenadasFortaleza(){ //TODO
@@ -401,9 +470,9 @@ function accionesInstantaneas() {
     }
     //expedicion1
     if (window.location.href.toString().indexOf("custom=expedicion") != -1) {
-        if (getNumNaves("cg") >= 50) {
+        if (getNumNaves("cg") >= 75) {
             $("#ship_210").val("1");
-            $("#ship_203").val("50").change();
+            $("#ship_203").val("75").change();
             $("#continue").click();
         }
     }
