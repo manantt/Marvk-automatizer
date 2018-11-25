@@ -64,7 +64,7 @@ const planetas = [
             true,
             false,
             false,//true,
-            false//true
+            true
         ]
     },
     {
@@ -280,11 +280,11 @@ function getCoordenadasPlanetaActual(){ //TODO
 }
 
 function getFlotasDisponibles(){ //TODO
-    return;
+    return 1;
 }
 
 function getExpedicionesDisponibles(){ //TODO
-    return;
+    return 1;
 }
 
 function sePuedenConstruirDeffs(idDeff){ //TODO
@@ -351,6 +351,24 @@ function mandarRecursos() {
 
 function expedicion() {
     console.log("exp");
+    if (window.location.toString().includes('page=fleet')) {
+        if (getNumNaves("cg") >= 75 && getExpedicionesDisponibles() > 0 && getFlotasDisponibles() > 0) {
+            $("#ship_210").val("1");
+            $("#ship_203").val("75").change();
+            $("#continue").click();
+        } else {
+            siguienteAccion();
+        }
+    } else if(window.location.toString().includes('page=fleet2')) {
+        $("#system").val(parseInt(Math.random() * 4 + getCoordenadasPlanetaActual()[1] - 2));
+        $("#position").val(16);
+        $("#continue").click();
+    } else if(window.location.toString().includes('page=fleet3')) {
+        $("#start").click();
+    } else {
+        window.location = 'https://s157-es.ogame.gameforge.com/game/index.php?page=fleet1';
+    }
+    
 }
 
 function recolectar() {
