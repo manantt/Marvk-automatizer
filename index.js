@@ -351,7 +351,7 @@ function mandarRecursos() {
 
 function expedicion() {
     console.log("exp");
-    if (window.location.toString().includes('page=fleet')) {
+    if (window.location.toString().includes('page=fleet1')) {
         if (getNumNaves("cg") >= 75 && getExpedicionesDisponibles() > 0 && getFlotasDisponibles() > 0) {
             $("#ship_210").val("1");
             $("#ship_203").val("75").change();
