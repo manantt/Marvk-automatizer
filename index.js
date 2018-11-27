@@ -111,7 +111,7 @@ const planetas = [
 
 /******************* MAIN *********************************************************/
 $(function() {
-    console.log("mrk" + ids.Lanzamisiles);
+    //console.log("mrk" + ids.Lanzamisiles);
     accionesInstantaneas();
     crearMenu();
     /* setTimeout(function() {
