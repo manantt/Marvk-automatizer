@@ -6,13 +6,12 @@
 // @author       Manantt, MRK.
 // @match        https://s157-es.ogame.gameforge.com/*
 // @grant        none
-// @require      https://raw.githubusercontent.com/manantt/marvk/master/config/htmlProperties.js
 // ==/UserScript==
 
 /******************* CONFIGURACIÓN *********************************************************/
 
-const config = configGeneral[configGeneral.getUsuario()];
-console.log(config);
+//const config = configGeneral[configGeneral.getUsuario()];
+//console.log(config);
 const acciones = [
     "defensas",
     "enviarRecursos",
