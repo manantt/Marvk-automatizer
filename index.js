@@ -35,7 +35,7 @@ const defensas = {
     ],
     "colonia": [
         ["Lanzamisiles", "details401", 100],
-        ["Láser pequeño", "details402", 500],
+        ["Láser pequeño", "details402", 600],
         ["Láser grande", "details403", 125],
         ["Cañón Gauss", "details404", 20],
         ["Cañón iónico", "details405", 10],
@@ -221,6 +221,29 @@ function crearMenu() {
         }
         location.reload();
     });
+    //Otros interfaces
+    crearInterfazEscaner();
+}
+
+function crearInterfazEscaner(){
+    if (window.location.href.toString().indexOf("custom=escanear") != -1) {
+        $("#galaxyHeader").hide();
+        $("#galaxyLoading").hide();
+        $("#galaxyContent").hide();
+        $(".ct_foot_row.uv_s_profile_wrapper").ready(function(){
+            $(this).html("");
+        });
+        $("#contentWrapper").append("<div id='escaner' style='width:670px;min-height:420px;background:rgba(10,15,20,0.7);color:#848484;text-align:center'></div>");
+        $("#escaner").append('<div style="background:#1e252f;width:200px;height:200px;padding:20px;float:left;border:2px solid #1e252f"><div class="pie" data-x="0" style="border:1px solid #111;background-color:#222;margin:0px;width:200px;height:200px;border-radius:50%;position:relative;overflow:hidden;"><div class="clip1" style="position:absolute;top:0;left:0;width:200px;height:200px;clip:rect(0px, 200px, 200px, 100px);box-shadow:0 2px 2px rgba(0,0,0,0.2) inset;border-radius:50%;"><div class="slice1" style="position:absolute;width:200px;height:200px;clip:rect(0px, 100px, 200px, 0px);-moz-border-radius:100px;-webkit-border-radius:100px;border-radius:100px;background-color:#9c0;border-color:#f7e5e1;transform:rotate(0);transition:all 0.3s linear 0s;"></div></div><div class="clip2" style="position:absolute;top:0;left:0;width:200px;height:200px;clip:rect(0, 100px, 200px, 0px);box-shadow:0 2px 2px rgba(0,0,0,0.2) inset;border-radius:50%;"><div class="slice2" style="position:absolute;width:200px;height:200px;clip:rect(0px, 200px, 200px, 100px);-moz-border-radius:100px;-webkit-border-radius:100px;border-radius:100px;background-color:#9c0;border-color:#f7e5e1;transform:rotate(0);transition:all 0.3s linear 0.3s;"></div></div><div class="inner" style="border:1px solid #111;position:absolute;height:70%;width:70%;line-height:60px;text-align:center;top:50%;left:50%;margin-top:-39%;margin-left:-35%;background:#1e252f;border-radius:100%;box-shadow:0 8px 15px 10px rgba(0,0,0,0.7);"><div class="status" style="position:absolute;height:30px;width:100%;line-height:60px;text-align:center;top:50%;margin-top:-35px;font-size:16px;font-family:verdana;"></div></div></div></div>');
+        $("#escaner").append("<div style='background:#1e252f;width:422px;height:204px;float:right;margin:0 2px;border-left:none;text-align:center;padding:20px 0;'>"+
+            "<h1>Escáner de escombros</h1>"+
+            "<img style='width:400px;margin:35px 11px;height:100px'>"+
+            "<p>Reciclador.: 100 Espacios usados: 5/14</p>"+
+        "</div>");
+        $("#escaner").append("<table id='tableEscaner' style='padding-top: 30px;margin-left:50px'><thead><tr><th style='padding:5px 50px;'>Posición</th><th>Distancia</th><th>Enviar</th><th style='padding:5px 50px;'>Metal</th><th>Cristal</th></tr><thead></table>");
+        progressBarUpdate(0,100);
+        recolectarManual();
+    }
 }
 
 /******************* ÚTILES *********************************************************/
@@ -368,7 +391,7 @@ function expedicion() {
     } else {
         window.location = 'https://s157-es.ogame.gameforge.com/game/index.php?page=fleet1';
     }
-    
+
 }
 
 function recolectar() {
@@ -383,12 +406,10 @@ function recolectarManual() {
     var resultados = [];
     var rango = 201;
     var repeticiones = 0;
-    $("#contenedor_escombros").remove();
-    $("body").append("<div id='contenedor_escombros' style='position:absolute;top:100px;left:50px;z-index:99999' class='t_ContentContainer t_clearfix t_Content_cloud'>0%</div>");
     var interval = setInterval(function() {
         resultados.push(buscarEscombros(g, origen + (rango - 1) / 2 - repeticiones));
         repeticiones++;
-        $("#contenedor_escombros").html(parseInt((repeticiones * 100) / rango) + "%");
+        progressBarUpdate(parseInt((repeticiones * 100) / rango),100);
         if (repeticiones >= rango) {
             clearInterval(interval);
             Promise.all(resultados).then(function(resultado) {
@@ -399,7 +420,7 @@ function recolectarManual() {
                 crearLista(escombros);
             });
         }
-    }, 100);
+    }, 150);
 }
 
 function buscarEscombros(galaxia, sistema) {
@@ -451,18 +472,20 @@ function interpretarDatos(data) {
 function crearLista(array) {
     array = array.sort(comparar);
     console.error(array);
-    var html = "<ul>";
+    var html = "";
     $.each(array, function(key, escombro) {
         if (parseInt(escombro.recicladores) > 1) {
-            html += "<li>";
-            html += '<a href="https://s157-es.ogame.gameforge.com/game/index.php?page=galaxy&galaxy=' + escombro.galaxia + '&system=' + escombro.sistema + '&position=' + escombro.planeta + '">' + escombro.galaxia + ':' + escombro.sistema + ':' + escombro.planeta + '</a> (' + Math.abs(parseInt(escombro.sistema) - origen) + ') - ';
-            html += "<a href='#' onclick='$(this).css(\"text-decoration\",\"line-through\");sendShips(8," + escombro.galaxia + "," + escombro.sistema + "," + escombro.planeta + ",2," + escombro.recicladores + ");return false;'>";
-            html += "Reducir (" + escombro.recicladores + ")";
-            html += "</a></li>";
+            html += "<tr style='padding:5px;'>";
+            html += '<td><a href="https://s157-es.ogame.gameforge.com/game/index.php?page=galaxy&galaxy=' + escombro.galaxia + '&system=' + escombro.sistema + '&position=' + escombro.planeta + '">' + escombro.galaxia + ':' + escombro.sistema + ':' + escombro.planeta + '</a></td>';
+            html += '<td>(' + Math.abs(parseInt(escombro.sistema) - origen) + ')</td>';
+            html += "<td><a href='#' onclick='$(this).css(\"text-decoration\",\"line-through\");sendShips(8," + escombro.galaxia + "," + escombro.sistema + "," + escombro.planeta + ",2," + escombro.recicladores + ");return false;'>";
+            html += "Reducir (<span style='color:#6f9fc8'>" + escombro.recicladores + "</span>)";
+            html += "</a></td>";
+            html += "<td>?</td><td>?</td>";
+            html += "</tr>";
         }
     });
-    html += "</ul>";
-    $("#contenedor_escombros").html(html);
+    $("#tableEscaner").append(html);
 }
 
 function comparar(a, b) {
@@ -480,7 +503,7 @@ function accionesInstantaneas() {
     }
     //escanear galaxia
     if (window.location.href.toString().indexOf("custom=escanear") != -1) {
-        recolectarManual();
+       // recolectarManual();
     }
     //expedicion1
     if (window.location.href.toString().indexOf("custom=expedicion") != -1) {
@@ -504,4 +527,81 @@ function accionesInstantaneas() {
             $("#start").click();
         }
     }
+}
+/************* OTRAS FUNCIONES **********************/
+function rotate(element, degree) {
+    element.css({
+        'transform': 'rotate(' + degree + 'deg)',
+        'zoom': 1
+    });
+}
+function getAngle(cx, cy, ex, ey, offset) {
+  var dy = ey - cy;
+  var dx = ex - cx;
+  var theta = Math.atan2(dy, dx); // range (-PI, PI]
+  theta *= 180 / Math.PI; // rads to degs, range (-180, 180]
+  if (typeof offset != 'undefined')
+        theta+=offset;
+  if (theta < 0) theta = 360 + theta; // range [0, 360)
+    
+    return theta;
+}
+function progressBarUpdate(x, outOf) {
+    var firstHalfAngle = 180;
+    var secondHalfAngle = 0;
+    var oldAngle = parseInt($(".pie").attr('data-angle'));
+    // caluclate the angle
+    var drawAngle = x / outOf * 360;
+
+    // calculate the angle to be displayed if each half
+    if (drawAngle <= 180) {
+        firstHalfAngle = drawAngle;
+    } else {
+        secondHalfAngle = drawAngle - 180;
+    }
+        
+    if (drawAngle > 180 && oldAngle < 180){
+       $(".slice1, .slice2").css({
+        'transition-duration':'0.15s',
+        '-webkit-transition-duration':'0.15s'
+      });
+        $(".slice1").css({
+        'transition-delay':'0s',
+        '-webkit-transition-delay':'0s'
+      });
+      $(".slice2").css({
+        'transition-delay':'0.15s',
+        '-webkit-transition-delay':'0.15s'
+      });
+    } else if (drawAngle < 180 && oldAngle > 180){
+        $(".slice1, .slice2").css({
+        'transition-duration':'0.15s',
+        '-webkit-transition-duration':'0.15s'
+      });
+        $(".slice2").css({
+        'transition-delay':'0s',
+        '-webkit-transition-delay':'0s'
+      });
+      $(".slice1").css({
+        'transition-delay':'0.15s',
+        '-webkit-transition-delay':'0.15s'
+      });
+    } else {
+      $(".slice1, .slice2").css({
+        'transition-delay':'0s',
+        '-webkit-transition-delay':'0s',
+        'transition-duration':'0.3s',
+        '-webkit-transition-duration':'0.3s'
+      });
+    }
+    
+    $('.pie').attr('data-angle', drawAngle);
+    $('.pie').attr('data-x', x);
+
+    // set the transition
+    rotate($(".slice1"), firstHalfAngle);
+    rotate($(".slice2"), secondHalfAngle);
+
+    // set the values on the text
+    $(".status").html(x + "%");
 }
