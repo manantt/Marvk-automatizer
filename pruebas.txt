@@ -1,0 +1,182 @@
+<style>
+.pie {
+    background-color:#424242;
+    margin:0px;
+    width:200px;
+    height:200px;
+    border-radius:50%;
+    position:relative;
+    overflow:hidden;
+}
+.clip1 {
+    position:absolute;
+    top:0;
+    left:0;
+    width:200px;
+    height:200px;
+    clip:rect(0px, 200px, 200px, 100px);
+    box-shadow:0 2px 2px rgba(0,0,0,0.2) inset;
+    border-radius:50%;
+}
+.slice1 {
+    position:absolute;
+    width:200px;
+    height:200px;
+    clip:rect(0px, 100px, 200px, 0px);
+    -moz-border-radius:100px;
+    -webkit-border-radius:100px;
+    border-radius:100px;
+    background-color:#00a0db;
+    border-color:#f7e5e1;
+    transform:rotate(0);
+    transition:all 0.3s linear 0s;
+}
+.clip2 {
+    position:absolute;
+    top:0;
+    left:0;
+    width:200px;
+    height:200px;
+    clip:rect(0, 100px, 200px, 0px);
+    box-shadow:0 2px 2px rgba(0,0,0,0.2) inset;
+    border-radius:50%;
+}
+.slice2 {
+    position:absolute;
+    width:200px;
+    height:200px;
+    clip:rect(0px, 200px, 200px, 100px);
+    -moz-border-radius:100px;
+    -webkit-border-radius:100px;
+    border-radius:100px;
+    background-color:#00a0db;
+    border-color:#f7e5e1;
+    transform:rotate(0);
+    transition:all 0.3s linear 0.3s;
+}
+.status {
+    position:absolute;
+    height:30px;
+    width:100%;
+    line-height:60px;
+    text-align:center;
+    top:50%;
+    margin-top:-35px;
+    font-size:16px;
+    font-family:verdana;
+}
+
+.inner {
+    position:absolute;
+    height:70%;
+    width:70%;
+    line-height:60px;
+    text-align:center;
+    top:50%;
+    left:50%;
+    margin-top:-39%;
+    margin-left:-35%;
+    background:#fff;
+    border-radius:100%;
+    box-shadow:0 5px 15px 15px rgba(0,0,0,0.3);
+}
+</style>
+
+<script>
+$(document).ready(function () {
+    progressBarUpdate(0,100);
+});
+
+function rotate(element, degree) {
+    element.css({
+        'transform': 'rotate(' + degree + 'deg)',
+        'zoom': 1
+    });
+}
+function getAngle(cx, cy, ex, ey, offset) {
+  var dy = ey - cy;
+  var dx = ex - cx;
+  var theta = Math.atan2(dy, dx); // range (-PI, PI]
+  theta *= 180 / Math.PI; // rads to degs, range (-180, 180]
+  if (typeof offset != 'undefined')
+		theta+=offset;
+  if (theta < 0) theta = 360 + theta; // range [0, 360)
+	
+	return theta;
+}
+function progressBarUpdate(x, outOf) {
+    var firstHalfAngle = 180;
+    var secondHalfAngle = 0;
+    var oldAngle = parseInt($(".pie").attr('data-angle'));
+    // caluclate the angle
+    var drawAngle = x / outOf * 360;
+
+    // calculate the angle to be displayed if each half
+    if (drawAngle <= 180) {
+        firstHalfAngle = drawAngle;
+    } else {
+        secondHalfAngle = drawAngle - 180;
+    }
+        
+    if (drawAngle > 180 && oldAngle < 180){
+       $(".slice1, .slice2").css({
+      	'transition-duration':'0.15s',
+        '-webkit-transition-duration':'0.15s'
+      });
+    	$(".slice1").css({
+      	'transition-delay':'0s',
+        '-webkit-transition-delay':'0s'
+      });
+      $(".slice2").css({
+      	'transition-delay':'0.15s',
+        '-webkit-transition-delay':'0.15s'
+      });
+    } else if (drawAngle < 180 && oldAngle > 180){
+        $(".slice1, .slice2").css({
+      	'transition-duration':'0.15s',
+        '-webkit-transition-duration':'0.15s'
+      });
+    	$(".slice2").css({
+      	'transition-delay':'0s',
+        '-webkit-transition-delay':'0s'
+      });
+      $(".slice1").css({
+      	'transition-delay':'0.15s',
+        '-webkit-transition-delay':'0.15s'
+      });
+    } else {
+      $(".slice1, .slice2").css({
+      	'transition-delay':'0s',
+        '-webkit-transition-delay':'0s',
+        'transition-duration':'0.3s',
+        '-webkit-transition-duration':'0.3s'
+      });
+    }
+    
+    $('.pie').attr('data-angle', drawAngle);
+    $('.pie').attr('data-x', x);
+
+    // set the transition
+    rotate($(".slice1"), firstHalfAngle);
+    rotate($(".slice2"), secondHalfAngle);
+
+    // set the values on the text
+    $(".status").html(x + " of " + outOf);
+}
+</script>
+
+<html>
+<div style="width:200px;height:200px;">
+    <div class="pie" data-x="0" style="background-color:#424242;margin:0px;width:200px;height:200px;border-radius:50%;position:relative;overflow:hidden;">
+        <div class="clip1" style="position:absolute;top:0;left:0;width:200px;height:200px;clip:rect(0px, 200px, 200px, 100px);box-shadow:0 2px 2px rgba(0,0,0,0.2) inset;border-radius:50%;">
+            <div class="slice1" style="position:absolute;width:200px;height:200px;clip:rect(0px, 100px, 200px, 0px);-moz-border-radius:100px;-webkit-border-radius:100px;border-radius:100px;background-color:#00a0db;border-color:#f7e5e1;transform:rotate(0);transition:all 0.3s linear 0s;"></div>
+        </div>
+        <div class="clip2" style="position:absolute;top:0;left:0;width:200px;height:200px;clip:rect(0, 100px, 200px, 0px);box-shadow:0 2px 2px rgba(0,0,0,0.2) inset;border-radius:50%;">
+            <div class="slice2" style="position:absolute;width:200px;height:200px;clip:rect(0px, 200px, 200px, 100px);-moz-border-radius:100px;-webkit-border-radius:100px;border-radius:100px;background-color:#00a0db;border-color:#f7e5e1;transform:rotate(0);transition:all 0.3s linear 0.3s;"></div>
+        </div>
+        <div class="inner" style="position:absolute;height:70%;width:70%;line-height:60px;text-align:center;top:50%;left:50%;margin-top:-39%;margin-left:-35%;background:#fff;border-radius:100%;box-shadow:0 5px 15px 8px rgba(0,0,0,0.3);">
+            <div class="status" style="position:absolute;height:30px;width:100%;line-height:60px;text-align:center;top:50%;margin-top:-35px;font-size:16px;font-family:verdana;"></div>
+        </div>
+    </div>
+</div>
+</html>
