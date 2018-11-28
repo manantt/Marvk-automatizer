@@ -110,7 +110,6 @@ const planetas = [
 
 /******************* MAIN *********************************************************/
 $(function() {
-    //console.log("mrk" + ids.Lanzamisiles);
     accionesInstantaneas();
     crearMenu();
     /* setTimeout(function() {
@@ -120,13 +119,14 @@ $(function() {
     init();
 });
 
-var localStorage1 = "nope";
 if (typeof localStorage.accionActual == "undefined") {
     localStorage.accionActual = 0;
     localStorage.planetaActual = 0;
     localStorage.pausa = "true";
 }
-
+/**
+ * Comprueba qué tiene que hacer el bot
+ */
 function init() {
     if (localStorage.pausa === "false") {
         console.log();
@@ -160,6 +160,9 @@ function init() {
 }
 
 /******************* MENU *********************************************************/
+/**
+ * Genera los items de menú custom
+ */
 function crearMenu() {
     $("#menuTable").prepend("<li id='menuCustom' style='padding: 5px 0 5px 15px;'></li>");
     $("#menuCustom").append(
@@ -223,7 +226,9 @@ function crearMenu() {
     //Otros interfaces
     crearInterfazEscaner();
 }
-
+/**
+ * Genera la vista de escaner de escombros
+ */
 function crearInterfazEscaner(){
     if (window.location.href.toString().indexOf("custom=escanear") != -1) {
         $("#galaxyHeader").hide();
@@ -246,6 +251,9 @@ function crearInterfazEscaner(){
 }
 
 /******************* ÚTILES *********************************************************/
+/**
+ * Hace que el bot pase a la siguiente acción. Si ya se encuentra en la última pasa al siguiente planeta. 
+ */
 function siguienteAccion() {
     localStorage.accionActual = parseInt(localStorage.accionActual) + 1;
     if(localStorage.accionActual >= acciones.length){
@@ -254,7 +262,9 @@ function siguienteAccion() {
     }
     location.reload();
 }
-
+/**
+ * Hace que el bot pase al siguiente planeta. Si ya se encuentra en el último finaliza la ejecución. 
+ */
 function siguientePlaneta() {
     localStorage.planetaActual = parseInt(localStorage.planetaActual) + 1;
     if(localStorage.planetaActual >= planetas.length){
@@ -264,11 +274,19 @@ function siguientePlaneta() {
     }
     location.reload();
 }
-
+/**
+ * Cambia de planeta en el juego
+ * @param idPlaneta int: clave del planeta (0-10)
+ */
 function goToPlaneta(idPlaneta){
     window.location = "https://s157-es.ogame.gameforge.com/game/index.php?page=defense&cp="+planetas[idPlaneta]['id'];
 }
-
+/**
+ * Devuelve el número de naves del tipo solicitado
+ * @param tipo string: alias de la nave
+ *     -"cg": nave grande de carga
+ *     -"cp": nave pequeña de carga
+ */
 function getNumNaves(tipo) { //TODO
     var id = "ship_203";
     switch (tipo) {
@@ -282,7 +300,9 @@ function getNumNaves(tipo) { //TODO
     if($("#" + id).length == 0) return 0;
     return parseInt($("#" + id).attr("onchange").match(/([0-9]+)\)/)[1]);
 }
-
+/**
+ * Devuelve la clave (0-10) del planeta actual en el juego
+ */
 function getPlanetaSeleccionado() { //TODO
     var planeta = null;
     $("#myPlanets .smallplanet .planetlink").each(function(key, v){
@@ -292,28 +312,46 @@ function getPlanetaSeleccionado() { //TODO
     });
     return planeta;
 }
-
+/**
+ * Devuelve las coordenadas del planeta fortaleza
+ * @return [int, int, int]
+ */
 function getCoordenadasFortaleza(){ //TODO
      return [3, 204, 5];
 }
-
+/**
+ * Devuelve las coordenadas del planeta actual
+ * @return [int, int, int]
+ */
 function getCoordenadasPlanetaActual(){ //TODO
      return [3, 204, 5];
 }
-
+/**
+ * Devuelve el número de flotas disponibles
+ * @return int
+ */
 function getFlotasDisponibles(){ //TODO
     return 1;
 }
-
+/**
+ * Devuelve el número de expediciones disponibles
+ * @return int
+ */
 function getExpedicionesDisponibles(){ //TODO
     return 1;
 }
-
+/**
+ * Comprueba si se pueden construir defensas del tipo requerido en el planeta actual
+ * @return bool
+ */
 function sePuedenConstruirDeffs(idDeff){ //TODO
     return $("li.on #"+idDeff).length > 0;
 }
 
 /******************* ACCIONES AUTOMÁTICAS *********************************************************/
+/**
+ * Comprueba si las defensas del planeta son inferiores a las programadas e inicia la contrucción si fueran insuficientes
+ */
 function hacerDefensas() {
     if (window.location.toString().includes('defense')) {
         if ($("#bestand").length == 0) {
@@ -344,7 +382,9 @@ function hacerDefensas() {
         window.location = 'https://s157-es.ogame.gameforge.com/game/index.php?page=defense';
     }
 }
-
+/**
+ * Envía un cargamento de recursos a la fortaleza
+ */
 function mandarRecursos() {
     console.log("recursos");
     if (window.location.toString().includes('page=fleet1')) {
@@ -370,7 +410,9 @@ function mandarRecursos() {
         window.location = 'https://s157-es.ogame.gameforge.com/game/index.php?page=fleet1';
     }
 }
-
+/**
+ * Envía una expedición de ngc en un sistema próximo aleatorio
+ */
 function expedicion() {
     console.log("exp");
     if (window.location.toString().includes('page=fleet1')) {
@@ -400,7 +442,9 @@ function recolectar() {
 /******************* ACCIONES MANUALES *********************************************************/
 var origen = typeof system == "undefined" ? 204 : parseInt(system);
 var g = typeof galaxy == "undefined" ? 3 : parseInt(galaxy);
-
+/**
+ * Escanea los sistemas circundantes al planeta actual y genera una lista con enlaces para su recolección
+ */
 function recolectarManual() {
     var resultados = [];
     var rango = 201;
@@ -421,7 +465,7 @@ function recolectarManual() {
         }
     }, 150);
 }
-
+//Realiza una búsqueda de escombros en el sistema indicado y devuelve los datos necesarios para su recolección
 function buscarEscombros(galaxia, sistema) {
     //var promise = {"aaaa":sistema};
     var promise = new Promise(function(resolve, reject) {
@@ -446,7 +490,7 @@ function buscarEscombros(galaxia, sistema) {
     return promise;
 
 }
-
+//Aplica un regex sobre el html que devuelve el servidor y extrae los datos de los escombros
 function interpretarDatos(data) {
     var regex = /(<a href="#" onClick="sendShips\(8,)([0-9])(,)([0-9]+)(,)([0-9]+)(,[0-9]+,)([0-9]+)(\);)/g;
     //var regex = /(<td class="debris js_debris[0-9]+ js_no_action">.)(\s)+(<div id="ownFleetStatus_[0-9]+_2" class="fleetAction)(.){1,73}(>)(.){1,1200}(<a href="#" onClick="sendShips\(8,)([0-9])(,)([0-9]+)(,)([0-9]+)(,[0-9]+,)([0-9]+)(\);)/gm;
@@ -467,7 +511,7 @@ function interpretarDatos(data) {
     } while (m);
     return resultado;
 }
-
+//Genera la tabla de resultados del escaner
 function crearLista(array) {
     array = array.sort(comparar);
     console.error(array);
@@ -486,7 +530,7 @@ function crearLista(array) {
     });
     $("#tableEscaner").append(html);
 }
-
+//Función de comparación. Permite ordenar el array de escombros de menor a mayor distancia al planeta actual
 function comparar(a, b) {
     if (Math.abs(parseInt(a.sistema) - origen) < Math.abs(parseInt(b.sistema) - origen))
         return -1;
@@ -528,6 +572,9 @@ function accionesInstantaneas() {
     }
 }
 /************* OTRAS FUNCIONES **********************/
+/**
+ * Funciones para el progressbar
+ */
 function rotate(element, degree) {
     element.css({
         'transform': 'rotate(' + degree + 'deg)',
@@ -603,4 +650,10 @@ function progressBarUpdate(x, outOf) {
 
     // set the values on the text
     $(".status").html(x + "%");
+}
+/**
+ * Convierte a int un string en formato ogame (ej. "1.000.000" -> 1000000)
+ */
+function toInt(recString){
+    return parseInt(recString.replace(/\./g, ""));
 }
