@@ -101,7 +101,17 @@ const planetas = [
         "fortaleza": false,
         "acciones": [
             true,
+            true,
             false,
+            false
+        ]
+    },
+    {
+        "id": "33679268",
+        "fortaleza": false,
+        "acciones": [
+            true,
+            true,
             false,
             false
         ]
@@ -447,7 +457,7 @@ var g = typeof galaxy == "undefined" ? 3 : parseInt(galaxy);
  */
 function recolectarManual() {
     var resultados = [];
-    var rango = 201;
+    var rango = 199;
     var repeticiones = 0;
     var interval = setInterval(function() {
         resultados.push(buscarEscombros(g, origen + (rango - 1) / 2 - repeticiones));
