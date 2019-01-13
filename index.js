@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         MARVK
 // @namespace    http://tampermonkey.net/
-// @version      0.1.3
+// @version      0.1.4
 // @description  try to take over the world!
 // @author       Manantt, MRK.
 // @match        https://s157-es.ogame.gameforge.com/*
@@ -18,30 +18,30 @@ const acciones = [
     "reciclar",
     "expedicion"
 ];
-
+var fodder = 65000;
 const defensas = {
     "fortaleza": [
-        ["Lanzamisiles", "details401", 3000],
-        ["Láser pequeño", "details402", 15000],
-        ["Láser grande", "details403", 3750],
-        ["Cañón Gauss", "details404", 500],
-        ["Cañón iónico", "details405", 1250],
-        ["Cañón de plasma", "details406", 150],
+        ["Lanzamisiles", "details401", parseInt(fodder/5)],
+        ["Láser pequeño", "details402", fodder],
+        ["Láser grande", "details403", parseInt(fodder/4)],
+        ["Cañón Gauss", "details404", parseInt(fodder/30)],
+        ["Cañón iónico", "details405", parseInt(fodder/12)],
+        ["Cañón de plasma", "details406", parseInt(fodder/100)],
         ["Cúpula pequeña de protección", "details407", 1],
         ["Cúpula grande de protección", "details408", 1],
-        ["Misiles antibalísticos", "details502", 58],
+        ["Misiles antibalísticos", "details502", 68],
         ["Misil interplanetario", "details503", 1]
     ],
     "colonia": [
-        ["Lanzamisiles", "details401", 200],
-        ["Láser pequeño", "details402", 1000],
-        ["Láser grande", "details403", 250],
-        ["Cañón Gauss", "details404", 33],
-        ["Cañón iónico", "details405", 10],
-        ["Cañón de plasma", "details406", 10],
+        ["Lanzamisiles", "details401", parseInt(fodder/100)],
+        ["Láser pequeño", "details402", parseInt(fodder/20)],
+        ["Láser grande", "details403", parseInt(fodder/80)],
+        ["Cañón Gauss", "details404", parseInt(fodder/600)],
+        ["Cañón iónico", "details405", parseInt(fodder/240)],
+        ["Cañón de plasma", "details406", parseInt(fodder/2000)],
         ["Cúpula pequeña de protección", "details407", 1],
         ["Cúpula grande de protección", "details408", 1],
-        ["Misiles antibalísticos", "details502", 20],
+        ["Misiles antibalísticos", "details502", 30],
         ["Misil interplanetario", "details503", 0]
     ]
 }
@@ -108,6 +108,16 @@ const planetas = [
     },
     {
         "id": "33679268",
+        "fortaleza": false,
+        "acciones": [
+            true,
+            true,
+            false,
+            false
+        ]
+    },
+    {
+        "id": "33708027",
         "fortaleza": false,
         "acciones": [
             true,
@@ -262,7 +272,7 @@ function crearInterfazEscaner(){
 
 /******************* ÚTILES *********************************************************/
 /**
- * Hace que el bot pase a la siguiente acción. Si ya se encuentra en la última pasa al siguiente planeta. 
+ * Hace que el bot pase a la siguiente acción. Si ya se encuentra en la última pasa al siguiente planeta.
  */
 function siguienteAccion() {
     localStorage.accionActual = parseInt(localStorage.accionActual) + 1;
@@ -273,7 +283,7 @@ function siguienteAccion() {
     location.reload();
 }
 /**
- * Hace que el bot pase al siguiente planeta. Si ya se encuentra en el último finaliza la ejecución. 
+ * Hace que el bot pase al siguiente planeta. Si ya se encuentra en el último finaliza la ejecución.
  */
 function siguientePlaneta() {
     localStorage.planetaActual = parseInt(localStorage.planetaActual) + 1;
@@ -398,9 +408,11 @@ function hacerDefensas() {
 function mandarRecursos() {
     console.log("recursos");
     if (window.location.toString().includes('page=fleet1')) {
-        if (getNumNaves("cp") >= 100) {
-            $("#ship_202").val("100").change();
-            $("#continue").click();
+        if (getNumNaves("cp") >= 300) {
+            $("#ship_202").val("300").change();
+            setTimeout(function(){
+                $("#continue").click();
+            }, 100);
         } else {
             siguienteAccion();
         }
@@ -426,10 +438,12 @@ function mandarRecursos() {
 function expedicion() {
     console.log("exp");
     if (window.location.toString().includes('page=fleet1')) {
-        if (getNumNaves("cg") >= 75 && getExpedicionesDisponibles() > 0 && getFlotasDisponibles() > 0) {
+        if (getNumNaves("cg") >= 150 && getExpedicionesDisponibles() > 0 && getFlotasDisponibles() > 0) {
             $("#ship_210").val("1");
-            $("#ship_203").val("75").change();
-            $("#continue").click();
+            $("#ship_203").val("100").change();
+            setTimeout(function(){
+                $("#continue").click();
+            }, 200);
         } else {
             siguienteAccion();
         }
@@ -560,15 +574,15 @@ function accionesInstantaneas() {
     }
     //expedicion1
     if (window.location.href.toString().indexOf("custom=expedicion") != -1) {
-        if (getNumNaves("cg") >= 75) {
+        if (getNumNaves("cg") >= 100) {
             $("#ship_210").val("1");
-            $("#ship_203").val("75").change();
+            $("#ship_203").val("100").change();
             $("#continue").click();
         }
     }
     //expedición 2
     if (window.location.href.toString().indexOf("page=fleet2") != -1) {
-        if ($("#storage .undermark").html() == "1.875.000") {
+        if ($("#storage .undermark").html() == "2.500.000") {
             $("#system").val(parseInt(Math.random() * 4 + getCoordenadasPlanetaActual()[1] - 2));
             $("#position").val(16);
             $("#continue").click();
@@ -576,7 +590,7 @@ function accionesInstantaneas() {
     }
     //expedición 3
     if (window.location.href.toString().indexOf("page=fleet3") != -1) {
-        if ($("#maxresources").html() == "1.875.000") {
+        if ($("#maxresources").html() == "2.500.000") {
             $("#start").click();
         }
     }
@@ -599,7 +613,7 @@ function getAngle(cx, cy, ex, ey, offset) {
   if (typeof offset != 'undefined')
         theta+=offset;
   if (theta < 0) theta = 360 + theta; // range [0, 360)
-    
+
     return theta;
 }
 function progressBarUpdate(x, outOf) {
@@ -615,7 +629,7 @@ function progressBarUpdate(x, outOf) {
     } else {
         secondHalfAngle = drawAngle - 180;
     }
-        
+
     if (drawAngle > 180 && oldAngle < 180){
        $(".slice1, .slice2").css({
         'transition-duration':'0.15s',
@@ -650,7 +664,7 @@ function progressBarUpdate(x, outOf) {
         '-webkit-transition-duration':'0.3s'
       });
     }
-    
+
     $('.pie').attr('data-angle', drawAngle);
     $('.pie').attr('data-x', x);
 
